@@ -19,7 +19,7 @@ function LandingPage() {
         formData.append('video', videoFile);
 
         try {
-            const response = await axios.post(process.env.REACT_APP_API_URL, formData, {
+            const response = await axios.post(process.env.REACT_APP_API_SEND_VIDEO, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
