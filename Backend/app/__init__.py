@@ -7,9 +7,6 @@ import os
 
 from app.routes.videos import videos_blueprint
 
-
-
-
 migrate = Migrate()  
 
 UPLOAD_FILES_FOLDER = 'Upload_Files'
@@ -40,5 +37,4 @@ def register_extensions(app):
 def register_resources(app):
     """Register application blueprints."""
 
-    #use BDD 
     app.register_blueprint(videos_blueprint, url_prefix='/api/videos')
