@@ -26,7 +26,7 @@ def create_app():
 
     # Configuration de Redis et RQ avec les variables d'environnement
     redis_conn = Redis(
-        host=os.getenv('REDIS_HOST', 'localhost'),
+        host=os.getenv('REDIS_HOST', 'redis_cache'),
         port=os.getenv('REDIS_PORT', 6379)
     )
     queue = Queue(connection=redis_conn)

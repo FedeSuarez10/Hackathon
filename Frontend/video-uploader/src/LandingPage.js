@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './index.css';
 import * as XLSX from 'xlsx';
+import axios from 'axios';
 
 function LandingPage() {
     const [videoFile, setVideoFile] = useState(null);
@@ -25,18 +26,40 @@ function LandingPage() {
         createCitronRain();
 
         try {
-            await new Promise((resolve) => setTimeout(resolve, 5000));
-            const fakeExcelData = [
-                ["Nom", "Âge", "Profession"],
-                ["Alice", 30, "Ingénieur"],
-                ["Bob", 25, "Designer"],
-                ["Charlie", 35, "Manager"]
-            ];
-            setExcelFile(fakeExcelData);
+            const response = await axios.post(process.env.REACT_APP_API_SEND_VIDEO, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            let id_task = response.data.task_id;
+
+            // Fonction de polling pour interroger Redis
+            const pollRedis = async () => {
+                try {
+                    const responseRedis = await axios.get(`${process.env.REACT_APP_API_REDIS_DATA}${id_task}`);
+                    if (responseRedis.data.status === 'finished') {
+                        // Données prêtes, traitement et arrêt du polling
+                        console.log(responseRedis.data);
+                        setExcelFile(responseRedis.data.result); // Adapter en fonction de la réponse Redis
+                        setIsLoading(false);
+                        setCitrons([]); // Réinitialisation après la fin du traitement
+                    } else {
+                        // Si pas encore prêt, attendre et relancer
+                        setTimeout(pollRedis, 500); // Requête toutes les 500ms
+                    }
+                } catch (error) {
+                    console.error("Erreur lors de l'interrogation Redis:", error);
+                    alert("Erreur de communication avec Redis.");
+                    setIsLoading(false);
+                    setCitrons([]);
+                }
+            };
+
+            // Démarrage du polling
+            pollRedis();
         } catch (error) {
             console.error("Erreur lors de l'envoi:", error);
             alert("Erreur lors de l'envoi de la vidéo.");
-        } finally {
             setIsLoading(false);
             setCitrons([]);
         }
@@ -70,6 +93,10 @@ function LandingPage() {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+    };
+
+    const handleReset = () => {
+        setExcelFile(null)
     };
 
     return (
@@ -108,6 +135,7 @@ function LandingPage() {
                 {excelFile && (
                     <div className="preview-container">
                         <button onClick={handleDownload} className="button">Télécharger le fichier</button>
+                        <button onClick={handleReset} className="button">Retourner au début</button>
                     </div>
                 )}
             </div>
