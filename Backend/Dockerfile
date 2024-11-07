@@ -1,26 +1,24 @@
+# Utilisez une image Python légère
 FROM python:3.10-slim
 
+# Désactive l'écriture de fichiers .pyc
 ENV PYTHONDONTWRITEBYTECODE=1
+# Désactive le buffering de sortie pour une meilleure lisibilité des logs
 ENV PYTHONUNBUFFERED=1
 
+# Définir le répertoire de travail dans le conteneur
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpq-dev \
-    default-libmysqlclient-dev \
-    && rm -rf /var/lib/apt/lists/*
+# Copier le fichier principal de l'application
+COPY app.py /app/app.py
+# Copier le dossier de téléchargement
+COPY uploads /app/uploads
 
-COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r requirements.txt
+# Installer Flask et Flask-CORS
+RUN pip install Flask Flask-CORS
 
-COPY . /app
-
-# Copier et donner les droits d'exécution au script entrypoint.sh
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
+# Exposer le port 5000 pour Flask
 EXPOSE 5000
 
-# Utiliser entrypoint.sh comme point d'entrée
-ENTRYPOINT ["/entrypoint.sh"]
+# Lancer l'application Flask
+CMD ["python", "app.py"]

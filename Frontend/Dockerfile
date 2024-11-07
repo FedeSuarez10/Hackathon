@@ -10,7 +10,8 @@ COPY video-uploader/.env .env
 RUN npm install
 
 # Charger les variables d'environnement et exécuter le build
-RUN export $(cat .env | xargs) && npm run build
+# RUN export $(cat .env | xargs) && npm run build
+RUN set -a && . .env && set +a && npm run build
 
 # Étape 2 : Configuration de Nginx pour servir l'application
 FROM nginx:alpine
