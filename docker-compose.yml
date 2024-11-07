@@ -1,0 +1,70 @@
+version: "3.8"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    env_file:
+      - .env
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - back-db
+
+  redis:
+    image: redis:alpine
+    container_name: redis_cache
+    ports:
+      - "6379:6379"
+    networks:
+      - back-db
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    env_file:
+      - .env
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+    networks:
+      - back-db
+
+  back:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: flask_api
+    ports:
+      - "8080:5000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+    networks:
+      - back-db
+      - frontend-backend
+
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    container_name: react_app
+    ports:
+      - "80:80"
+    volumes:
+      - ./Frontend:/app
+    environment:
+      - REACT_APP_API_URL=http://flask_api:5000/api
+    networks:
+      - frontend-backend
+
+networks:
+  frontend-backend:
+  back-db:
+
+volumes:
+  db_data:
