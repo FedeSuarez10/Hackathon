@@ -1,14 +1,5 @@
-from flask import flash, redirect, request, jsonify, send_from_directory
-from extensions import db
-import os  
-
-
-
-# --------------------CRUD-------------------------------
-
-# --------------------SPE_DU_CHEF------------------------
 import os
-from flask import request, flash, redirect, url_for, current_app
+from flask import request, current_app, jsonify
 from werkzeug.utils import secure_filename
 
 ALLOWED_EXTENSIONS = {'mp4', 'avi', 'mov'}
@@ -18,25 +9,26 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def upload():
-    """Logique pour le téléchargement d'une vidéo."""
+    """Logique pour télécharger une vidéo et l'enregistrer en local."""
     if 'file' not in request.files:
-        flash('No file part')
-        return redirect(request.url)
-    
+        return jsonify({"message": "No file part"}), 400      
     file = request.files['file']
     
     if file.filename == '':
-        flash('No selected file')
-        return redirect(request.url)
+        return jsonify({"message": "No selected file"}), 400 
     
     if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        save_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+        filename = secure_filename(file.filename) 
+        save_path = os.path.join(current_app.config['UPLOAD_FILES_FOLDER'], filename)  
+        file.save(save_path) 
         
-        file.save(save_path)
-        
-        flash('File successfully uploaded')
-        return {"message": "File successfully uploaded"}, 201
+        return jsonify({"message": "File successfully uploaded"}), 201 
     else:
-        flash('File not allowed')
-        return {"message": "File not allowed"}, 400
+        return jsonify({"message": "File not allowed"}), 400  
+
+
+
+# --------------------CRUD-------------------------------
+
+# --------------------SPE_DU_CHEF------------------------
+
