@@ -168,6 +168,11 @@ body {
     margin-top: 20px;
 }
 
+.preview-container .button {
+    margin: 10px;
+    /* Ajustez la valeur pour plus ou moins d'espace */
+}
+
 .preview-title {
     font-size: 1.2rem;
     color: #ffdd55;
