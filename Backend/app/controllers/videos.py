@@ -8,3 +8,5 @@ from extensions import db
 
 
 # --------------------SPE_DU_CHEF------------------------
+def upload():
+    return "mesage: hello"

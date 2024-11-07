@@ -46,24 +46,24 @@ services:
       - db
     networks:
       - back-db
-      - frontend-backend
+      # - frontend-backend
 
-  frontend:
-    build:
-      context: ./Frontend
-      dockerfile: Dockerfile
-    container_name: react_app
-    ports:
-      - "80:80"
-    volumes:
-      - ./Frontend:/app
-    environment:
-      - REACT_APP_API_URL=http://flask_api:5000/api
-    networks:
-      - frontend-backend
+  # frontend:
+  #   build:
+  #     context: ./Frontend
+  #     dockerfile: Dockerfile
+  #   container_name: react_app
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./Frontend:/app
+  #   environment:
+  #     - REACT_APP_API_URL=http://flask_api:5000/api
+  #   networks:
+  #     - frontend-backend
 
 networks:
-  frontend-backend:
+  # frontend-backend:
   back-db:
 
 volumes:

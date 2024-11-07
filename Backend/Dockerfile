@@ -16,11 +16,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /app
 
-# Copier et donner les droits d'exécution au script entrypoint.sh
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 EXPOSE 5000
 
-# Utiliser entrypoint.sh comme point d'entrée
 ENTRYPOINT ["/entrypoint.sh"]
