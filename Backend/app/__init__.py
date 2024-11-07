@@ -5,6 +5,8 @@ from flask_cors import CORS
 import os
 
 
+from app.routes.videos import videos_blueprint
+
 
 
 
@@ -39,4 +41,4 @@ def register_resources(app):
     """Register application blueprints."""
 
     #use BDD 
-    # app.register_blueprint(main_blueprint, url_prefix='/api/main')
+    app.register_blueprint(videos_blueprint, url_prefix='/api/videos')
