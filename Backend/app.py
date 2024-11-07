@@ -3,6 +3,7 @@ from flask_cors import CORS  # Importer CORS
 import os
 from redis import Redis
 from rq import Queue
+from rq.job import Job
 from video_processor import process_video  # Importer la fonction de traitement de la vidéo
 import uuid
 
@@ -41,9 +42,9 @@ def upload_video():
     return jsonify({"message": "Vidéo en cours de traitement", "task_id": job.id}), 200
 
 @app.route('/status/<task_id>', methods=['GET'])
-def get_status(task_id):
-    status = task_status.get(task_id, "Unknown Task ID")
-    return jsonify({"status": status})
+def job_status(task_id):  
+    job = Job.fetch(task_id, connection=redis_conn) 
+    return jsonify({"status": job.get_status(), "result": job.result}), 200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
