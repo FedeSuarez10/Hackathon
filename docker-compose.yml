@@ -1,54 +1,53 @@
 version: "3.8"
 
 services:
-  # db:
-  #   image: mysql:8.0
-  #   container_name: mysql_db
-  #   env_file:
-  #     - .env
-  #   ports:
-  #     - "3306:3306"
-  #   volumes:
-  #     - db_data:/var/lib/mysql
-  #   networks:
-  #     - back-db
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    env_file:
+      - .env
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - back-db
 
-  # redis:
-  #   image: redis:alpine
-  #   container_name: redis_cache
-  #   ports:
-  #     - "6379:6379"
-  #   networks:
-  #     - back-db
+  redis:
+    image: redis:alpine
+    container_name: redis_cache
+    ports:
+      - "6379:6379"
+    networks:
+      - back-db
 
-  # phpmyadmin:
-  #   image: phpmyadmin/phpmyadmin
-  #   container_name: phpmyadmin
-  #   env_file:
-  #     - .env
-  #   ports:
-  #     - "8081:80"
-  #   depends_on:
-  #     - db
-  #   networks:
-  #     - back-db
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    env_file:
+      - .env
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+    networks:
+      - back-db
 
   frontend:
     build:
       context: ./Frontend
       dockerfile: Dockerfile
       args:
-        - REACT_APP_API_SEND_VIDEO  # Passer la variable pendant le build
+        - REACT_APP_API_SEND_VIDEO # Passer la variable pendant le build
     container_name: react_app
     ports:
       - "80:80"
     env_file:
-      - ./Frontend/video-uploader/.env  # Mettre à jour avec le bon chemin vers le fichier .env
+      - ./Frontend/video-uploader/.env # Mettre à jour avec le bon chemin vers le fichier .env
     volumes:
-      - ./Frontend/nginx.conf:/etc/nginx/nginx.conf         # Monter la configuration personnalisée de Nginx
+      - ./Frontend/nginx.conf:/etc/nginx/nginx.conf # Monter la configuration personnalisée de Nginx
     networks:
       - frontend-backend
-
 
   back:
     build:
