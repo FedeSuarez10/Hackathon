@@ -19,21 +19,22 @@ wait_for_db() {
   done
 }
 
-
-
 # Wait for the database to be ready
 wait_for_db
 echo "Database is ready."
 
-
 echo "Migrations..."
 flask db migrate 
 echo "Migrations done..."
-
 
 # Apply migrations
 echo "Applying migrations..."
 flask db upgrade
 echo "Done..."
 
+# Start worker.py in the background
+echo "Starting worker process..."
+# python worker.py &
+
+# Start the main application server with Gunicorn
 exec gunicorn --bind 0.0.0.0:5000 wsgi:app
