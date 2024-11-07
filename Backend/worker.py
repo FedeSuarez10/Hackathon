@@ -3,7 +3,7 @@ from redis import Redis
 from rq import Worker, Queue
 
 # Connexion à Redis
-redis_conn = Redis()
+redis_conn = Redis(host='redis_cache', port=6379)
 
 # Définir la file d'attente (queue) et spécifier la connexion
 listen = [Queue('default', connection=redis_conn)]  # Fournir la connexion explicitement ici
