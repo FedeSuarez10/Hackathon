@@ -8,18 +8,19 @@ function LandingPage() {
     const [excelFile, setExcelFile] = useState(null);
     const [citrons, setCitrons] = useState([]);
 
-    const handleFileChange = (event) => {
-        setVideoFile(event.target.files[0]);
-    };
+  const handleFileChange = (event) => {
+    setVideoFile(event.target.files[0]);
+  };
 
-    const handleProcessClick = async () => {
-        if (!videoFile) {
-            alert("Veuillez sélectionner un fichier vidéo.");
-            return;
-        }
+  const handleProcessClick = async () => {
+    if (!videoFile) {
+      alert("Veuillez sélectionner un fichier vidéo.");
+      return;
+    }
 
-        const formData = new FormData();
-        formData.append('video', videoFile);
+    const formData = new FormData();
+    formData.append("video", videoFile);
+
 
         setIsLoading(true);
         createCitronRain();
@@ -39,8 +40,16 @@ function LandingPage() {
         } finally {
             setIsLoading(false);
             setCitrons([]);
+
         }
-    };
+      );
+      alert("Vidéo envoyée avec succès!");
+    } catch (error) {
+      console.error("Erreur lors de l'envoi:", error);
+      alert("Erreur lors de l'envoi de la vidéo.");
+    }
+  };
+
 
     const createCitronRain = () => {
         const types = ["citron", "citron-with-leaves", "citron-with-branch"];
@@ -113,6 +122,7 @@ function LandingPage() {
             </div>
         </>
     );
+
 }
 
 export default LandingPage;
