@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import './index.css';
+import * as XLSX from 'xlsx';
 
 function LandingPage() {
     const [videoFile, setVideoFile] = useState(null);
@@ -46,19 +46,27 @@ function LandingPage() {
         const types = ["citron", "citron-with-leaves", "citron-with-branch"];
         const citronArray = Array.from({ length: 40 }, () => ({
             id: Math.random(),
-            type: types[Math.floor(Math.random() * types.length)], // Type aléatoire
-            left: Math.random() * 120 - 10 + 'vw', // Position horizontale aléatoire
-            animationDuration: Math.random() * 3 + 4 + 's', // Vitesse aléatoire (4s à 7s)
-            size: Math.random() * 20 + 20 + 'px' // Taille entre 20px et 40px
+            type: types[Math.floor(Math.random() * types.length)],
+            left: Math.random() * 120 - 10 + 'vw',
+            animationDuration: Math.random() * 3 + 4 + 's',
+            size: Math.random() * 20 + 20 + 'px'
         }));
         setCitrons(citronArray);
     };
 
     const handleDownload = () => {
-        const csvContent = "data:text/csv;charset=utf-8," + excelFile.map(e => e.join(",")).join("\n");
+        const worksheet = XLSX.utils.aoa_to_sheet(excelFile);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Données Traitée");
+
+        // Génère le fichier Excel en Blob
+        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+        const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+        // Création du lien pour télécharger le fichier Excel
         const link = document.createElement("a");
-        link.setAttribute("href", encodeURI(csvContent));
-        link.setAttribute("download", "fichier_traité.csv");
+        link.href = URL.createObjectURL(blob);
+        link.setAttribute("download", "fichier_traité.xlsx");
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -66,7 +74,6 @@ function LandingPage() {
 
     return (
         <>
-            {/* Pluie de citrons en arrière-plan */}
             {isLoading && citrons.map((citron) => (
                 <div
                     key={citron.id}
@@ -80,7 +87,6 @@ function LandingPage() {
                 />
             ))}
 
-            {/* Conteneur principal */}
             <div className="container">
                 <h1 className="title">Tarte'O'Citron</h1>
                 <p className="subtitle">Bienvenue sur la plateforme de gestion vidéo</p>
@@ -102,7 +108,6 @@ function LandingPage() {
                 {excelFile && (
                     <div className="preview-container">
                         <button onClick={handleDownload} className="button">Télécharger le fichier</button>
-                        {/* <button onClick={window.location.reload()} className="button">Télécharger le fichier</button> */}
                     </div>
                 )}
             </div>

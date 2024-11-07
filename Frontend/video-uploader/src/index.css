@@ -16,39 +16,39 @@ body {
     position: absolute;
     top: -50px;
     background-color: #ffdd55;
-    border-radius: 50%;
-    box-shadow: inset -3px -3px 0px 0px #f0c845;
+    width: 30px;
+    height: 50px;
+    /* Forme ovale pour rappeler un citron */
+    border-radius: 50% 50% 40% 40%;
+    box-shadow: inset -3px -3px 0px 0px #f0c845, 3px 3px 5px rgba(0, 0, 0, 0.2);
     animation: fall linear infinite;
     z-index: 0;
-    /* Placer les citrons derrière le conteneur principal */
     opacity: 0.8;
 }
 
 /* Citron avec des feuilles */
-.citron-with-leaves::before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: 5px;
-    width: 10px;
-    height: 10px;
-    background-color: #228B22;
-    /* Vert pour la feuille */
-    border-radius: 50%;
-    transform: rotate(45deg);
-}
-
+.citron-with-leaves::before,
 .citron-with-leaves::after {
     content: '';
     position: absolute;
-    top: -10px;
-    left: 15px;
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     background-color: #228B22;
     /* Vert pour la feuille */
     border-radius: 50%;
-    transform: rotate(-45deg);
+}
+
+/* Positionnement des feuilles */
+.citron-with-leaves::before {
+    top: -12px;
+    left: 5px;
+    transform: rotate(35deg);
+}
+
+.citron-with-leaves::after {
+    top: -12px;
+    left: 15px;
+    transform: rotate(-35deg);
 }
 
 /* Citron avec une branche */
@@ -57,8 +57,8 @@ body {
     position: absolute;
     top: -10px;
     left: 10px;
-    width: 4px;
-    height: 12px;
+    width: 5px;
+    height: 15px;
     background-color: #8B4513;
     /* Marron pour la branche */
     border-radius: 2px;
@@ -73,10 +73,10 @@ body {
 
     100% {
         transform: translateY(600px) rotate(360deg);
-        /* Chute plus longue pour remplir l'écran */
         opacity: 0;
     }
 }
+
 
 /* Conteneur principal */
 .container {
