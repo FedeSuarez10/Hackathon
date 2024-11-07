@@ -6,8 +6,6 @@ import os
 
 # --------------------CRUD-------------------------------
 
-
-
 # --------------------SPE_DU_CHEF------------------------
 import os
 from flask import request, flash, redirect, url_for, current_app
