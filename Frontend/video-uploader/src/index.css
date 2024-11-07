@@ -1,0 +1,62 @@
+/* Style général pour le thème de la tarte au citron */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container principal */
+.container {
+    text-align: center;
+    background-color: #fffaf0;
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+    padding: 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+/* Titre principal */
+.title {
+    font-size: 2rem;
+    color: #ffdd55;
+    margin-bottom: 10px;
+}
+
+/* Sous-titre */
+.subtitle {
+    font-size: 1rem;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+/* Style de l'input */
+.input {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Style du bouton */
+.button {
+    background-color: #ffdd55;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+.button:hover {
+    background-color: #f0c845;
+}
