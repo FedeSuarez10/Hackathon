@@ -1,6 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.10-slim
-
+FROM python:3.10
 # Set the working directory in the container to /app
 WORKDIR /app
 
@@ -9,6 +8,12 @@ COPY . /app
 
 # Install dependencies from requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+
+RUN apt-get update && apt-get install -y wget unzip && \
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    apt install -y ./google-chrome-stable_current_amd64.deb && \
+    rm google-chrome-stable_current_amd64.deb && \
+    apt-get clean
 
 # Optional: Expose port 6379 for Redis (only needed if connecting externally)
 EXPOSE 6379

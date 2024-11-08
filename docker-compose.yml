@@ -29,6 +29,7 @@ services:
     container_name: worker_redis
     depends_on:
       - redis
+    shm_size: '1gb'
     networks:
       - back-redis-worker
       - frontend-backend
