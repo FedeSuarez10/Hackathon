@@ -5,8 +5,15 @@ class Data(db.Model):
     __tablename__ = 'data'
 
     id = db.Column(db.Integer, primary_key=True)
-    licence_plate = db.Column(db.String(10), unique=False, nullable=False, index=True)
-    car_color = db.Column(db.String(50), nullable=False)
+    rang = db.Column(db.Integer, unique=False)
+    marque = db.Column(db.String(255), nullable=False)
+    modele = db.Column(db.String(255), nullable=False)
+    plaque = db.Column(db.String(10), unique=True, nullable=False, index=True)
+    coleur = db.Column(db.String(50), nullable=False)
+    heure = db.Column(db.String(50), nullable=False)
+    tranche_horaire = db.Column(db.String(50), nullable=False)
+
+    
 
 
     @property
@@ -14,8 +21,13 @@ class Data(db.Model):
         """Return user data as a dictionary."""
         return {
             'id': self.id,
-            'licence_plate': self.licence_plate,
-            'car_color': self.created_at,
+            'rang': self.rang,
+            'marque': self.marque,
+            'modele': self.modele,
+            'plaque': self.plaque,
+            'couleur': self.coleur,
+            'heure': self.heure,
+            'tranche_horaire': self.tranche_horaire,
         }
 
     def save(self):
@@ -25,8 +37,8 @@ class Data(db.Model):
             db.session.commit()
         except Exception as e:
             db.session.rollback()
-            logging.error(f"Error saving data {self.id}: {str(e)}")  # Include exception details
+            logging.error(f"Error saving Data {self.id}: {str(e)}")  
             raise e
 
     def __repr__(self):
-        return f'<User {self.id}>'
+        return f'<Data {self.id}>'

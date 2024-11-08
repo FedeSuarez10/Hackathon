@@ -13,6 +13,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Import des routes de l'application
 from app.routes.videos import videos_blueprint
+from app.routes.data import data_blueprint
 
 def create_app():
     app = Flask(__name__)
@@ -61,3 +62,4 @@ def register_extensions(app):
 def register_resources(app):
     """Enregistrement des blueprints de l'application."""
     app.register_blueprint(videos_blueprint, url_prefix='/api/videos')
+    app.register_blueprint(data_blueprint, url_prefix='/api/data')
